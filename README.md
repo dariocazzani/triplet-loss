@@ -1,5 +1,5 @@
-# triplet-loss
-Triplet Loss Learning and Visualization
+# Triplet-:oss
+Triplet Loss Learning and Visualization in TensorFlow
 
 ### Requirements:
 
