@@ -13,13 +13,11 @@ from network import Network
 model_path = "saved_models/model.ckpt"
 embedding_path = "saved_models/embedding.bin"
 
-# Prepare Session
 sess = tf.InteractiveSession()
 
-# setup siamese network
 network = Network();
 train_op = tf.train.AdamOptimizer(0.001).minimize(network.loss)
-# saver = tf.train.Saver()
+
 tf.global_variables_initializer().run()
 
 saver = tf.train.Saver()
