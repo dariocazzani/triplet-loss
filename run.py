@@ -13,11 +13,13 @@ from network import Network
 model_path = "saved_models/model.ckpt"
 embedding_path = "saved_models/embedding.bin"
 
+# Prepare Session
 sess = tf.InteractiveSession()
 
+# setup siamese network
 network = Network();
 train_op = tf.train.AdamOptimizer(0.001).minimize(network.loss)
-
+# saver = tf.train.Saver()
 tf.global_variables_initializer().run()
 
 saver = tf.train.Saver()
@@ -40,8 +42,7 @@ try:
                             network.is_training: True})
 
         if np.isnan(loss_value):
-            print('Model diverged with loss = NaN')
-            quit()
+            raise ValueError('Loss value is NaN')
 
         if step % 10 == 0:
             anchor, positive, negative = triplet_load_validation(1024)
@@ -53,7 +54,7 @@ try:
 
             print ('step %d: training loss %.3f validation loss %.3f' % (step, loss_value, loss_validation))
 
-        if step % 100 == 0 and step > 0:
+        if step % 100 == 0:
             save_path = saver.save(sess, model_path)
             embed = network.i_vector3.eval({network.negative: test_images(), network.is_training: False})
             embed.tofile(embedding_path)
@@ -65,3 +66,6 @@ except (KeyboardInterrupt, SystemExit):
     save_path = saver.save(sess, model_path)
     embed = network.i_vector3.eval({network.negative: test_images(), network.is_training: False})
     embed.tofile(embedding_path)
+
+except Exception as e:
+    print("Exception: {}".format(e))
