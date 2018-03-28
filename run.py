@@ -16,10 +16,8 @@ embedding_path = "saved_models/embedding.bin"
 # Prepare Session
 sess = tf.InteractiveSession()
 
-# setup siamese network
 network = Network();
 train_op = tf.train.AdamOptimizer(0.001).minimize(network.loss)
-# saver = tf.train.Saver()
 tf.global_variables_initializer().run()
 
 saver = tf.train.Saver()
@@ -52,7 +50,7 @@ try:
                             network.negative: negative,
                             network.is_training: False})
 
-            print ('step %d: training loss %.3f validation loss %.3f' % (step, loss_value, loss_validation))
+            print ('step {}: training loss {:.3f} validation loss {:.3f}'.format(step, loss_value, loss_validation))
 
         if step % 100 == 0:
             save_path = saver.save(sess, model_path)
